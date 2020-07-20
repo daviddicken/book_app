@@ -26,6 +26,8 @@ app.use(express.urlencoded({extended:true}));
 
 app.get('/', renderHome);
 
+app.get('/searches/new', searchPage);
+
 // app.get('/hello' tester); proof of life
 
 // functions
@@ -34,6 +36,10 @@ function renderHome(req, resp){
   resp.render('pages/index.ejs');
 }
 
+function searchPage(req, resp){
+  resp.render('pages/searches/new.ejs');
+}
+  
 // function tester(req, resp){
 //   resp.render('pages/index.ejs');
 // } card proof of life request
