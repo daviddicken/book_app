@@ -14,14 +14,22 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 // middleware
 
 app.use(express.static('./public'));
 
 app.use(express.urlencoded({extended:true}));
 
-// setup view engine
+// paths
 
-app.set('view engine', 'ejs');
+app.get('/', renderHome);
+
+// functions
+
+function renderHome(req, resp){
+  resp.render('pages/index.ejs');
+}
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
