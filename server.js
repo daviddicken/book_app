@@ -26,10 +26,16 @@ app.use(express.urlencoded({extended:true}));
 
 app.get('/', renderHome);
 
+// app.get('/hello' tester); proof of life
+
 // functions
 
 function renderHome(req, resp){
   resp.render('pages/index.ejs');
 }
+
+// function tester(req, resp){
+//   resp.render('pages/index.ejs');
+// } card proof of life request
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
