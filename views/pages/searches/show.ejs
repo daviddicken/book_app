@@ -3,27 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href='reset.css'/>     -->
-    <link rel="stylesheet" href='../styles/base.css'/>
+    <link rel="stylesheet" href='../styles/reset.css'/>
+    <link rel="stylesheet" href='../styles/base.css'/>  
+    <link rel="stylesheet" href='../styles/modules.css'/>
+    <link rel="stylesheet" href='../styles/layout.css'/>
     <title>Seach book</title>
 </head>
 <body>
 
     <header>
-
+        <h3 class='form-spacer zoom'>These are your results:</h3>
     </header>
     
-    <main>
-        <main>
-            <% searchResults.forEach( book => { %>
-                <h3> <%= book.title %> </h3>
-                <img src='<%= book.image %>'/>
-                <h3> <%= book.authors %> </h3>
-                <h3> <%= book.image %> </h3>
-
-                <% }) %>
-        </main>
-
+    
+    <main id='search-main'>
+         <% searchResults.forEach( book => { %>
+             <div class='books'>
+                 <div class='book-img'>
+                    <img src='<%= book.image %>'/>
+                 </div>
+                 <div class='book-info'>
+                    <h3 class='form-spacer'>Title: <span class='highlight'><%=  book.title %></span> Author: <span class='highlight'><%= book.authors %></span> </h3>
+                    <p> </p>
+                    <h6 class='form-spacer'><%= book.description %></h6>
+                 </div>  
+             </div>
+        <% }) %>
+                
     </main>
     
     <footer>

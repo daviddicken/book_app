@@ -30,7 +30,13 @@ app.get('/searches/new', searchPage);
 
 app.post('/searches', searchBooks);
 
+app.get('*', errorHandler);
 // functions
+
+function errorHandler(req, resp)
+{
+  resp.render('pages/error.ejs')
+}
 
 function renderHome(req, resp){
   resp.render('pages/index.ejs');
@@ -42,9 +48,7 @@ function searchPage(req, resp){
 
 function searchBooks(req, resp){
   let query = req.body.search[0];
-  console.log('this is query: ', query);
   let category = req.body.search[1];
-  console.log('this is category: ', category);
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
   if(category === 'title'){url += `+intitle:${query}`}
@@ -53,9 +57,6 @@ function searchBooks(req, resp){
   superagent.get(url).then(results => {
     let bookArr = results.body.items;
     const finalBookArr = bookArr.map(book => {
-
-      // console.log('this is the author: ',);
-      // console.log('this is the description: ');
       return new Book(book.volumeInfo);
     });
     resp.render('pages/searches/show.ejs', {searchResults: finalBookArr})
