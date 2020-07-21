@@ -2,6 +2,8 @@
 
 //global variables
 
+const pg = require('pg');
+
 const express = require('express');
 
 const superagent = require('superagent');
@@ -13,6 +15,12 @@ require('ejs');
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+
+const client = new pg.Client(process.env.DATABASE_URL);
+
+client.on('client', error => {
+  console.log('error', error);
+});
 
 app.set('view engine', 'ejs');
 
@@ -39,8 +47,24 @@ function errorHandler(req, resp)
 }
 
 function renderHome(req, resp){
-  resp.render('pages/index.ejs');
+  let sql = 'SELECT * FROM books;';
+  client.query(sql)
+    .then(book => {
+      let abook = book.rows;
+      resp.render('pages/index.ejs', {faves: abook});
+    })
 }
+
+// let sql = 'SELECT * FROM tasks;';
+// client.query(sql)
+//   .then(results => {
+//     // display them on the index.ejs
+//     let tasks = results.rows;
+//     response.render('index.ejs', {banana: tasks});
+//   })
+// }
+
+
 
 function searchPage(req, resp){
   resp.render('pages/searches/new.ejs');
@@ -56,7 +80,10 @@ function searchBooks(req, resp){
 
   superagent.get(url).then(results => {
     let bookArr = results.body.items;
+
+    //// delete that!
     const finalBookArr = bookArr.map(book => {
+      console.log(book.volumeInfo);
       return new Book(book.volumeInfo);
     });
     resp.render('pages/searches/show.ejs', {searchResults: finalBookArr})
@@ -71,16 +98,21 @@ function searchBooks(req, resp){
 
 function Book(obj){
   this.title = obj.title ? obj.title : 'no title available';
-
   let x = obj.imageLinks.thumbnail;
-  let y = 'https';
-
-  let g = x.slice(4);
-
-
-  this.image = y+g ? y+g : 'public/styles/img/cover.jpeg';
+  let tempArr = x.split(':');
+  tempArr[0] = 'https:';
+  let str = `${tempArr[0]}${tempArr[1]}`;
+  this.image_url = str ? str : 'public/styles/img/cover.jpeg';
   this.authors = obj.authors ? obj.authors : 'no author available';
   this.description = obj.description ? obj.description : 'no information available';
+  let type = obj.industryIdentifiers[0].type;
+  let num = obj.industryIdentifiers[0].identifier
+  let isbn = `${type}:${num}`;
+  this.isbn = isbn ? isbn : 'no information available';
+  this.bookshelf = 1;
 }
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+client.connect()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+  });

@@ -12,12 +12,29 @@
 <body>
 
     <header>
-
+        <h1> The Book App </h1>
     </header>
     
     <main>
 
-        <h1> HELLO WORLD </h1>
+
+        <main id='search-main'>
+            <% faves.forEach( book => { %>
+                <div class='books desktop-books'>
+                    <div class='book-img'>
+                       <img src='<%= book.image %>'/>
+                    </div>
+                    <div class='book-info'>
+                       <h3 class='form-spacer'>Title: <span class='highlight'><%=  book.title %></span> 
+                        Author: <span class='highlight'><%= book.authors %></span> </h3>
+                        <h3 class='form-spacer'>ISBN: <span class='highlight'><%=  book.isbn %></span> 
+                            bookshelf: <span class='highlight'><%= book.bookshelf %></span> </h3>
+                       <p> </p>
+                       <h6 class='form-spacer'><%= book.description %></h6>
+                    </div>  
+                </div>
+           <% }) %>
+
 
     </main>
     
