@@ -12,13 +12,13 @@
 <body>
 
     <header>
-        <h3 class='form-spacer zoom'>These are your results:</h3>
+        <h3 id='results' class='form-spacer zoom'>These are your results:</h3>
     </header>
     
     
     <main id='search-main'>
          <% searchResults.forEach( book => { %>
-             <div class='books'>
+             <div class='books desktop-books'>
                  <div class='book-img'>
                     <img src='<%= book.image %>'/>
                  </div>

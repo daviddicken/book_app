@@ -1,0 +1,22 @@
+@media only screen and (min-width: 900px){
+
+  body{
+    display: flex;
+    margin-left: 110px;
+  }
+
+  .desktop-books{
+    width: 20%;
+    float: left;
+    height: 240px;
+    overflow: scroll;
+    margin: 10px;
+    border: solid 2px white;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  #results{
+    width: 121px;
+  }
+}
