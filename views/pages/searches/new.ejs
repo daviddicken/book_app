@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href='reset.css'/>     -->
-    <link rel="stylesheet" href='../styles/base.css'/>
+    <link rel="stylesheet" href='../styles/reset.css'/>
+    <link rel="stylesheet" href='../styles/base.css'/>  
+    <link rel="stylesheet" href='../styles/modules.css'/>
+    <link rel="stylesheet" href='../styles/layout.css'/>
     <title>Seach book</title>
 </head>
 <body>
@@ -14,22 +16,22 @@
     </header>
     
     <main>
-        <h4>Search by Title or Author</h4>
-        <form action="/searches" method="post">
-          <input type="text" name="search" placeholder="Enter a title or author" required>
+        <h1 class='form-spacer' id='title'>Search by Title or Author</h1>
+        <form id= 'the-form' action="/searches" method="post">
+          <input class='form-spacer' type="text" name="search" placeholder="Enter a title or author" required>
           <fieldset>
-            <label for="title">
+            <label class='form-spacer' for="title">
               <span>Title</span>
               <input type="radio" name="search" value="title" required>
             </label>
           </fieldset>
           <fieldset>
-            <label for="author">
+            <label class='form-spacer' for="author">
               <span>Author</span>
               <input type="radio" name="search" value="author" required>
             </label>
           </fieldset>
-          <button type="submit">Search the Google Books API</button>
+          <button class='form-spacer' type="submit">Search the Google Books API</button>
         </form>
 
     </main>
