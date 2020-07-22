@@ -1,0 +1,17 @@
+<% faves.forEach( book => { %>
+
+    <div class='books desktop-books'>
+        <div class='book-img'>
+            <img src='<%= book.image_url %>'/>
+         </div>    
+         <div class='book-info'>
+            <h3 class='form-spacer'>Title: 
+                <span class='highlight'><%=  book.title %></span>
+                 Author: <span class='highlight'><%= book.author %></span> </h3>
+            <p> </p>
+            <p><%= book.isbn %> , <%= book.bookshelf %> </p>
+            <h6 class='form-spacer'><%= book.description %></h6>
+         </div>
+         </div>
+            
+    <% }) %>

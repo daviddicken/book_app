@@ -2,6 +2,8 @@
 
 //global variables
 
+const pg = require('pg');
+
 const express = require('express');
 
 const superagent = require('superagent');
@@ -14,6 +16,12 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+const client = new pg.Client(process.env.DATABASE_URL);
+
+client.on('client', error => {
+  console.log('error', error);
+});
+
 app.set('view engine', 'ejs');
 
 // middleware
@@ -24,14 +32,56 @@ app.use(express.urlencoded({extended:true}));
 
 // paths
 
+app.get('/books/:id', getOneBook);
+
 app.get('/', renderHome);
 
 app.get('/searches/new', searchPage);
 
 app.post('/searches', searchBooks);
 
+app.post('/books', addBooks);
+
 app.get('*', errorHandler);
+
+
+
 // functions
+
+function addBooks(request, response){
+
+
+  let {author, title, isbn, image, description, bookshelf} = request.body;
+
+  let image_url = image;
+  // save it to the database
+  let sql = 'INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID;';
+  let safeValues = [author, title, isbn, image_url, description, bookshelf];
+
+
+  client.query(sql, safeValues)
+    .then(results => {
+      let id = results.rows[0].id;
+
+      response.status(200).redirect(`/books/${id}`);
+
+    }).catch(err => {
+      response.status(500).render('pages/error.ejs', {error:err});
+    })
+}
+
+
+function getOneBook(request, response){
+  let id = request.params.id;
+  let sql = 'SELECT * FROM books WHERE id=$1;';
+  let safeValues = [id];
+  client.query(sql, safeValues)
+    .then(results => {
+      let selectedBook = results.rows[0];
+
+      response.render('pages/books/detail.ejs', { book:selectedBook});
+    })
+}
 
 function errorHandler(req, resp)
 {
@@ -39,7 +89,14 @@ function errorHandler(req, resp)
 }
 
 function renderHome(req, resp){
-  resp.render('pages/index.ejs');
+  let sql = 'SELECT * FROM books;';
+  client.query(sql)
+    .then(book => {
+      let abook = book.rows;
+      resp.render('pages/index.ejs', {faves: abook});
+    }).catch(err => {
+      resp.status(500).render('pages/error.ejs', {error:err});
+    })
 }
 
 function searchPage(req, resp){
@@ -66,21 +123,30 @@ function searchBooks(req, resp){
 
 // constructor
 
-//once you get to 'http vs http' Inside constructor on img check on the url of the image if it has http or
-//https: change the http to https if image is missing that s for Heroku's sake.
-
 function Book(obj){
+
   this.title = obj.title ? obj.title : 'no title available';
 
-  let x = obj.imageLinks.thumbnail;
-  let y = 'https';
+  let f = obj.imageLinks.thumbnail;
+  let tempArr = f.split(':');
+  tempArr[0] = 'https:';
+  let str = `${tempArr[0]}${tempArr[1]}`;
 
-  let g = x.slice(4);
 
+  this.image = str ? str : 'public/styles/img/cover.jpeg';
 
-  this.image = y+g ? y+g : 'public/styles/img/cover.jpeg';
   this.authors = obj.authors ? obj.authors : 'no author available';
   this.description = obj.description ? obj.description : 'no information available';
+
+
+  let type = obj.industryIdentifiers[0].type;
+  let num = obj.industryIdentifiers[0].identifier
+  let isbn = `${type}:${num}`;
+  this.isbn = isbn ? isbn : 'no information available';
+  this.bookshelf = 1;
 }
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+client.connect()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+  });
