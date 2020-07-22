@@ -53,19 +53,17 @@ function addBooks(request, response){
 
   let {author, title, isbn, image, description, bookshelf} = request.body;
 
+  let image_url = image;
   // save it to the database
-  let sql = 'INSERT INTO books (author, title, isbn, image, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID;';
-  let safeValues = [author, title, isbn, image, description, bookshelf];
+  let sql = 'INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID;';
+  let safeValues = [author, title, isbn, image_url, description, bookshelf];
 
 
-  console.log("here is the code before the promise");
   client.query(sql, safeValues)
     .then(results => {
-      // redirect to the detail page of that task
       let id = results.rows[0].id;
-      console.log('this should be an id:', id);
 
-      response.status(200).redirect(`/`);
+      response.status(200).redirect(`/books/${id}`);
 
     }).catch(err => {
       response.status(500).render('pages/error.ejs', {error:err});
@@ -74,7 +72,6 @@ function addBooks(request, response){
 
 
 function getOneBook(request, response){
-  // use the id that we got in the params to go the database and find the one task
   let id = request.params.id;
   let sql = 'SELECT * FROM books WHERE id=$1;';
   let safeValues = [id];
@@ -82,7 +79,6 @@ function getOneBook(request, response){
     .then(results => {
       let selectedBook = results.rows[0];
 
-      // display that one task on the detail page
       response.render('pages/books/detail.ejs', { book:selectedBook});
     })
 }
@@ -98,19 +94,10 @@ function renderHome(req, resp){
     .then(book => {
       let abook = book.rows;
       resp.render('pages/index.ejs', {faves: abook});
+    }).catch(err => {
+      resp.status(500).render('pages/error.ejs', {error:err});
     })
 }
-
-// let sql = 'SELECT * FROM tasks;';
-// client.query(sql)
-//   .then(results => {
-//     // display them on the index.ejs
-//     let tasks = results.rows;
-//     response.render('index.ejs', {banana: tasks});
-//   })
-// }
-
-
 
 function searchPage(req, resp){
   resp.render('pages/searches/new.ejs');
@@ -126,8 +113,6 @@ function searchBooks(req, resp){
 
   superagent.get(url).then(results => {
     let bookArr = results.body.items;
-
-    //// delete that!
     const finalBookArr = bookArr.map(book => {
       return new Book(book.volumeInfo);
     });
@@ -138,19 +123,7 @@ function searchBooks(req, resp){
 
 // constructor
 
-//once you get to 'http vs http' Inside constructor on img check on the url of the image if it has http or
-//https: change the http to https if image is missing that s for Heroku's sake.
-
 function Book(obj){
-
-  // let x = obj.imageLinks.thumbnail;
-
-  // let y = 'https';
-
-  // let g = x.slice(4);
-
-
-  // this.image = y+g ? y+g : 'public/styles/img/cover.jpeg';
 
   this.title = obj.title ? obj.title : 'no title available';
 
@@ -158,14 +131,14 @@ function Book(obj){
   let tempArr = f.split(':');
   tempArr[0] = 'https:';
   let str = `${tempArr[0]}${tempArr[1]}`;
- 
+
 
   this.image = str ? str : 'public/styles/img/cover.jpeg';
 
   this.authors = obj.authors ? obj.authors : 'no author available';
   this.description = obj.description ? obj.description : 'no information available';
-  
-  
+
+
   let type = obj.industryIdentifiers[0].type;
   let num = obj.industryIdentifiers[0].identifier
   let isbn = `${type}:${num}`;
