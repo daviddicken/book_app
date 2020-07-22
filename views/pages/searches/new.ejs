@@ -10,28 +10,23 @@
     <title>Seach book</title>
 </head>
 <body>
-
-    <header>
-
-    </header>
-    
-    <main>
-        <h1 class='form-spacer' id='title'>Search by Title or Author</h1>
+    <main class='centered'>
+        <h1 class='form-spacer' id='search-title'>Search by Title or Author</h1>
         <form id= 'the-form' action="/searches" method="post">
-          <input class='form-spacer' type="text" name="search" placeholder="Enter a title or author" required>
+          <input id='form-input' class='form-spacer' type="text" name="search" placeholder="Enter a title or author" required>
           <fieldset>
-            <label class='form-spacer' for="title">
+            <label class='form-spacer button-wrapper' for="title">
               <span>Title</span>
               <input type="radio" name="search" value="title" required>
             </label>
           </fieldset>
           <fieldset>
-            <label class='form-spacer' for="author">
+            <label class='form-spacer button-wrapper'  for="author">
               <span>Author</span>
               <input type="radio" name="search" value="author" required>
             </label>
           </fieldset>
-          <button class='form-spacer' type="submit">Search the Google Books API</button>
+          <button class='form-spacer submit-wrapper' type="submit">Search API</button>
         </form>
 
     </main>

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap');
 
 #title{
   text-align: center;
@@ -7,10 +8,12 @@
 }
 
 #the-form{
+  margin-top: 20px;
   width: 80%;
   margin: auto;
   background-color: grey;
   text-align: center;
+  position: relative;
 }
 
 .form-spacer{
@@ -50,3 +53,99 @@
   margin-bottom: 30px;
 }
 
+#intro-sub{
+  font-size: larger;
+  font-weight: bolder;
+  font-family: 'Pacifico', cursive;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.to-search-button{
+  position: fixed;
+  background-color:blanchedalmond;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  color: black;
+  top: 5px;
+  right: 5px;
+  margin-left: 25px !important;
+  line-height: 100px;
+  font-family: 'Fira Sans', sans-serif;
+  text-decoration: none !important;
+  padding: 5px;
+  font-weight: bolder;
+}
+
+.to-search-button2{
+  position: absolute;
+  background-color:blanchedalmond;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  color: black;
+  top: 82px;
+  right: 141px;
+  margin-left: 25px !important;
+  line-height: 100px;
+  font-family: 'Fira Sans', sans-serif;
+  text-decoration: none !important;
+  padding: 5px;
+  font-weight: bolder;
+}
+
+.to-search-button:hover{
+  background-color:white;
+  color: silver;
+}
+
+#search-title{
+  font-size: 80px;
+  font-weight: bolder;
+  font-family: 'Pacifico', cursive;
+  margin-bottom: 55px;
+}
+
+.centered{
+  text-align: center;
+  margin: auto;
+}
+
+#form-input{
+  display: block;
+  height: 70px;
+  width: 100%;
+  border-bottom: solid black;
+  line-height: 70px;
+  font-size: larger;
+}
+
+.button-wrapper{
+  float: left;
+  font-size: 45px;
+  margin-left: 20px;
+}
+
+.submit-wrapper{
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  padding: 30px;
+  font-size: 40px;
+}
+
+#results{
+  font-size: 80px;
+  font-weight: bolder;
+  font-family: 'Pacifico', cursive;
+  margin-bottom: 55px;
+}
+
+#result-wrapper{
+  border: solid 2px white;
+  width: 50%;
+  height: 320px;
+  margin: auto;
+  position: relative;
+}
