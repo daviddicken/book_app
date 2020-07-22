@@ -40,11 +40,38 @@ app.get('/searches/new', searchPage);
 
 app.post('/searches', searchBooks);
 
+app.post('/books', addBooks);
+
 app.get('*', errorHandler);
 
 
 
 // functions
+
+function addBooks(request, response){
+
+
+  let {author, title, isbn, image, description, bookshelf} = request.body;
+
+  // save it to the database
+  let sql = 'INSERT INTO books (author, title, isbn, image, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6) RETURNING ID;';
+  let safeValues = [author, title, isbn, image, description, bookshelf];
+
+
+  console.log("here is the code before the promise");
+  client.query(sql, safeValues)
+    .then(results => {
+      // redirect to the detail page of that task
+      let id = results.rows[0].id;
+      console.log('this should be an id:', id);
+
+      response.status(200).redirect(`/`);
+
+    }).catch(err => {
+      response.status(500).render('pages/error.ejs', {error:err});
+    })
+}
+
 
 function getOneBook(request, response){
   // use the id that we got in the params to go the database and find the one task

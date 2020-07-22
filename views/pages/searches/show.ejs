@@ -27,7 +27,19 @@
                          Author: <span class='highlight'><%= book.authors %></span> </h3>
                     <p> </p>
                     <h6 class='form-spacer'><%= book.description %></h6>
-                 </div>  
+                 </div>
+                 <form id="add-book-form" action="/books" method="post">
+                    <fieldset>
+                      <legend>Add to favorites: </legend>
+                      <input type="hidden" name="author" value="<%= book.authors %>">
+                      <input type="hidden" name="title" value="<%= book.title %>">
+                      <input type="hidden" name="isbn" value="<%= book.isbn %>">
+                      <input type="hidden" name="image" value="<%= book.image %>">
+                      <input type="hidden" name="description" value="<%= book.description %>">
+                      <input type="hidden" name="bookshelf" value="<%= 1 %>">
+                      <button type="submit">Add This Book</button>
+                    </fieldset>
+                  </form> 
              </div>
         <% }) %>
                 
