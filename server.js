@@ -126,13 +126,10 @@ function searchBooks(req, resp){
 function Book(obj){
 
   this.title = obj.title ? obj.title : 'no title available';
-
   let f = obj.imageLinks.thumbnail;
   let tempArr = f.split(':');
   tempArr[0] = 'https:';
   let str = `${tempArr[0]}${tempArr[1]}`;
-
-
   this.image = str ? str : 'public/styles/img/cover.jpeg';
 
   this.authors = obj.authors ? obj.authors : 'no author available';
