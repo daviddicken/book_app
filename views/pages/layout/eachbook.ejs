@@ -4,20 +4,21 @@
     <div class='books desktop-books'>
         <div class='book-img'>
             <img src='<%= book.image_url %>'/>
-         </div>    
-         <div class='book-info'>
+            <a  class='edit-button' href='../books/edit/<%= book.id %>'>EDIT</a> 
+        </div>    
+         <div class='book-info larger-text' >
             <h3 class='form-spacer' data-id="<%= book.id %>">Title: 
                 <span class='highlight'><%=  book.title %></span>
                  Author: <span class='highlight'><%= book.author %></span> </h3>
             <p> </p>
-            <p><%= book.isbn %> , <%= book.bookshelf %> </p>
-            <h6 class='form-spacer'><%= book.description %></h6>
-            <a  href='../books/edit/<%= book.id %>'>EDIT</a>
+            <p><%= book.isbn %> <span style='display: none;'> <%= book.bookshelf %></span> </p>
+            <h6 class='form-spacer left-ally'><span style="color: transparent;">....</span><%= book.description %></h6>
+           
          </div>
          
 
          </div>
             
     <% }) %>
-    <p>Book Count: <%= faves.length %></p>
+    <p id="book-counter">Books: <%= faves.length %><span style="color: transparent;">...</span></p>
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap');
+
 html{
     background-color: black;
     color: blanchedalmond;
@@ -13,6 +15,18 @@ background:transparent url(http://www.script-tutorials.com/demos/360/images/twin
 -o-animation:move-twink-back 200s linear infinite;
 -webkit-animation:move-twink-back 200s linear infinite;
 animation:move-twink-back 200s linear infinite;
+overflow-x: hidden;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+    font-family: 'Sora', sans-serif;
+}
+
+h6{
+    font-family: 'Sora', sans-serif;
+    line-height: 2em;
 }
 
 header{
