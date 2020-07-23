@@ -8,14 +8,16 @@
 
   .desktop-books{
     flex-grow: 2;
-    max-width: 28%; 
-    float: left;
-    height: 240px;
+    max-width: 55%; 
+    text-align: center;
+    height: 25em;
     overflow: scroll;
     margin: 10px;
     border: solid 2px white;
     overflow-x: hidden;
     padding: 20px;
+    margin: auto;
+    margin-bottom: 20px;
   }
 
 }
