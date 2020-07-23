@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='../styles/reset.css'/>
+    <link rel="stylesheet" href='../styles/base.css'/>  
+    <link rel="stylesheet" href='../styles/modules.css'/>
+    <link rel="stylesheet" href='../styles/layout.css'/>
+    <title>Book App</title>
+</head>
+<body>
+        <main id='search-main'>
+            <h1 id='intro-header'> The Book App </h1>
+            <h1 id='intro-sub'> This Is Your Bookshelf </h1>
+
+          
+
+            <form id="edit-book-form" action="/books/edit/<%= book.id %>?_method=PUT" method="post">
+              <fieldset>
+                <legend>Edit Book Info:</legend>
+
+                <label for='<%= book.author %>'>Author: <%= book.author %></label><br>
+                <input type="text" name="author" value="<%= book.author %>">
+                <br>
+
+                <label for="<%= book.title %>">Title: <%= book.title %></label><br>
+                <input type="text" name="title" value="<%= book.title %>">
+                <br>
+
+                <input type="hidden" name="isbn" value="<%= book.isbn %>">
+                <input type="hidden" name="image_url" value="<%= book.image_url %>">
+
+                <label for="<%= book.description %>">Descrition:</label><br>
+                <input type="text" name="description" value="<%= book.description %>">
+                <br>
+
+
+                <input type="hidden" name="bookshelf" value="<%= 1 %>">
+                <button type="submit">Edit This Book</button>
+              </fieldset>
+            </form>      
+
+            <form id="delete-book-form" action="/books/edit/<%= book.id %>?_method=DELETE" method="post">
+              <fieldset>
+                <input type="hidden" name="author" value="<%= book.author %>">
+                <input type="hidden" name="title" value="<%= book.title %>">
+                <input type="hidden" name="isbn" value="<%= book.isbn %>">
+                <input type="hidden" name="image_url" value="<%= book.image_url %>">
+                <input type="hidden" name="description" value="<%= book.description %>">
+                <input type="hidden" name="bookshelf" value="<%= 1 %>">
+                <button type="submit">Delete Book</button>
+              </fieldset>
+            </form>      
+    </main>
+    
+</body>
+</html>

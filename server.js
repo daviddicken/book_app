@@ -8,6 +8,8 @@ const express = require('express');
 
 const superagent = require('superagent');
 
+const methodOverride = require('method-override');
+
 require('dotenv').config();
 
 require('ejs');
@@ -30,6 +32,8 @@ app.use(express.static('./public'));
 
 app.use(express.urlencoded({extended:true}));
 
+app.use(methodOverride('_method'));
+
 // paths
 
 app.get('/books/:id', getOneBook);
@@ -42,11 +46,59 @@ app.post('/searches', searchBooks);
 
 app.post('/books', addBooks);
 
+app.get('/books/edit/:id', getAbook)
+
+app.put('/books/edit/:id', editInfo)
+app.delete('/books/edit/:id', deleteBook)
+
 app.get('*', errorHandler);
 
-
-
 // functions
+function deleteBook(request, response)
+{
+  let id = request.params.id;
+
+  let sql = 'DELETE FROM books WHERE id=$1;';
+  let safeValues = [id];
+
+  client.query(sql, safeValues)
+    .then(() => {
+      response.status(200).redirect('/');
+    }).catch(err => {
+      response.status(500).render('pages/error.ejs', {error:err});
+    })
+}
+
+function editInfo(request, response)
+{
+  let id = request.params.id;
+
+  let {author, title, isbn, image_url, description, bookshelf} = request.body;
+
+  let sql = 'UPDATE books SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7;';
+  let safeValues = [author, title, isbn, image_url, description, bookshelf, id];
+  client.query(sql, safeValues)
+    .then(() => {
+      response.status(200).redirect(`/books/${id}`);
+    }).catch(err => {
+      response.status(500).render('pages/error.ejs', {error:err});
+    })
+}
+
+function getAbook(request, response)
+{
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.id];
+
+  return client.query(SQL, values)
+    .then(result => {
+
+      return response.render('./pages/books/edit.ejs', { book: result.rows[0] });
+    }).catch(err => {
+      response.status(500).render('pages/error.ejs', {error:err});
+    })
+
+}
 
 function addBooks(request, response){
 
